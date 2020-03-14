@@ -11,7 +11,7 @@ def topstory():
 
 @app.route('/search/<query>/<count>')
 def search(query,count=3):
-    return(Q.Search(query,count))
+    return(Q.Search(query,int(count)))
 
 
 if __name__ == '__main__' :
