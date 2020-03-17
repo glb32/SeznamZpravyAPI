@@ -1,18 +1,22 @@
-from flask import Flask, url_for, jsonify
+from flask import Flask
 import query
-import json
+
 
 app = Flask(__name__)
-Q = query.Query()
+Q = query.Query(0)
 
 @app.route('/topstory')
 def topstory():
-    return(Q.QueryTopStory())
+    return(Q.QueryTopStoryHeadline())
 
 @app.route('/search/<query>/<count>')
 def search(query,count=3):
     return(Q.Search(query,int(count)))
 
+#IMPORTANT: ALWAYS CALL TOPSTORY BEFORE MAKING A CALL TO GETDOCUMENTTEXT()
+@app.route('/topstory/more')
+def more():
+    return(Q.GetDocumentText())
 
 if __name__ == '__main__' :
     app.run()
