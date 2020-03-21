@@ -18,5 +18,41 @@ def search(query,count=3):
 def more():
     return(Q.GetDocumentText())
 
+#this is used for choosing a story, callback is from the returned json (the voice assistant will have to choose what story id the function gets called with)
+@app.route('/topstory/more/<id>')
+def searchid(id=0):
+    return(Q.GetDocumentText(id))
+
 if __name__ == '__main__' :
-    app.run()
+    app.run(host='10.0.0.101')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
