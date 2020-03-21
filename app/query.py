@@ -1,5 +1,5 @@
 import requests
-import json
+
 
 
 class Query():
@@ -25,19 +25,24 @@ class Query():
         Result = {}
 
 
-        for i in range(3):
+        for i in range(10):
            title = (response['_items'][0]['documents']['_items'][i]['title'])
            self.LastId = self.Search(title,1,1)
 
            Result[title] = self.LastId
 
 
-           return(Result)
-    def GetDocumentText(self):
-        url = "https://api.seznamzpravy.cz/v1/documents/{}".format(self.LastId)
+        return(Result)
+    
+    def GetDocumentText(self,id=0):
+        if(id):
+            url = "https://api.seznamzpravy.cz/v1/documents/{}".format(id)
+        else:
+            url = "https://api.seznamzpravy.cz/v1/documents/{}".format(self.LastId)
         response = requests.get(url).json()
         text = response['content'][0]['properties']['texts'][0]
         return(text)
+
 
 
     
