@@ -18,29 +18,35 @@ class Query():
 
     Return: dict 3 of the top headlines, and their timestamps
     '''
-    def QueryTopStoryHeadline(self):
+    def QueryTopStoryHeadline(self,IdOnly=True):
         #get the JSON containing the template for top stories - return a JSON
         response = self.Request('timelines?itemIds=593ea6b9d7aa9828709783b3')
         
         Result = {}
-
+    
 
         for i in range(10):
-           title = (response['_items'][0]['documents']['_items'][i]['title'])
-           self.LastId = self.Search(title,1,1)
+    
+           
+           try:
+               title = (response['_items'][0]['documents']['_items'][i]['title'])
+               idtimestamp = self.Search(title,1,1)
+               Result[title] = idtimestamp
+           except IndexError:
 
-           Result[title] = self.LastId
+                idtimestamp = self.Search(title,1,1)
+                Result[title] = idtimestamp
 
-
+     
+                
         return(Result)
     
     def GetDocumentText(self,id=0):
-        if(id):
-            url = "https://api.seznamzpravy.cz/v1/documents/{}".format(id)
-        else:
-            url = "https://api.seznamzpravy.cz/v1/documents/{}".format(self.LastId)
+        
+        url = "https://api.seznamzpravy.cz/v1/documents/{}".format(id)
         response = requests.get(url).json()
         text = response['content'][0]['properties']['texts'][0]
+        timestamp = (response['_created'])   
         return(text)
 
 
@@ -54,21 +60,24 @@ class Query():
      Return: dict of count top headlines, as well as their timestamps, or the ID of a given headline
 
      '''   
-    def Search(self,keyword=None,count=3,ReturnId=False):
+    def Search(self,keyword=None,count=3,TopStory=False):
         if keyword == None:
             pass
         else:
             response = self.Request("search?service=zpravy&query={}".format(keyword))
-            
-            
             Result = {}
             try:
                 for i in range(count):
+                    
                     title = (response['_items'][i]['title'])
-                    timestamp = (response['_items'][i]['dateOfPublication'])   
                     uid = response['_items'][i]['uid']
-                    Result[title] =timestamp + ',' + str(uid)
+                    if(TopStory):
+                        return(uid)
+                    else:
+                        Result[title] = str(uid)
+
             except IndexError:
                 return(Result)
-            return(Result)
             
+
+            return(Result)
