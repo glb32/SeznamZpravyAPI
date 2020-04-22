@@ -3,8 +3,8 @@ import requests
 
 
 class Query():
-    def __init__(self,LastId):
-        self.LastId = str(LastId)
+
+     
 
     #Query headlines with HTTP GET
     def Request(self,RequestType=''):
@@ -65,14 +65,10 @@ class Query():
             try:
                 for i in range(count):
                     title = (response['_items'][i]['title'])
-                    timestamp = (response['_items'][i]['dateOfPublication'])    
-                    Result[title] = timestamp
+                    timestamp = (response['_items'][i]['dateOfPublication'])   
+                    uid = response['_items'][i]['uid']
+                    Result[title] =timestamp + ',' + str(uid)
             except IndexError:
                 return(Result)
-            
-            if(ReturnId):
-                self.LastId=response['_items'][0]['uid']
-                return(self.LastId)
-
             return(Result)
             
