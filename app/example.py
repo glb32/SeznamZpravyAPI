@@ -1,6 +1,6 @@
 from flask import Flask
 import query
-import requests
+
 
 app = Flask(__name__)
 Q = query.Query()
@@ -19,4 +19,4 @@ def searchid(id=0):
     return(Q.GetDocumentText(id))
 
 if __name__ == '__main__' :
-    app.run(host='10.0.0.101')
+    app.run()
