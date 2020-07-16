@@ -1,22 +1,21 @@
 import requests
 
 
-
+#NOTE: MULTIPLE INSTANCES HAVE TO BE IN DIFFERENT THREADS FOR BEST PERFORMANCE
 class Query():
 
-     
 
-    #Query headlines with HTTP GET
+    #Template for SeznamZpravy API calls
     def Request(self,RequestType=''):
         url = 'https://api.seznamzpravy.cz/v1/{}'.format(RequestType)
         response = requests.get(url).json()
         return(response)
 
     '''
-    QueryTopStoryHeadline
+    QueryTopStoryHeadline()
     Queries Top headlines of seznamzpravy 
 
-    Return: dict 3 of the top headlines, and their timestamps
+    Returns: dictionary 3 of the top headlines, as well as their timestamps
     '''
     def QueryTopStoryHeadline(self,IdOnly=True):
         #get the JSON containing the template for top stories - return a JSON
@@ -40,7 +39,8 @@ class Query():
      
                 
         return(Result)
-    
+
+    #GetDocumentText(): Gets a brief description of an Article
     def GetDocumentText(self,id=0):
         
         url = "https://api.seznamzpravy.cz/v1/documents/{}".format(id)
@@ -53,11 +53,11 @@ class Query():
 
     
     ''' 
-     Search
+     Search()
 
-     Searches for a specific thing in a specific range
+     Searches SeznamZpravy for a specific keyword 
 
-     Return: dict of count top headlines, as well as their timestamps, or the ID of a given headline
+     Returns: dict of count top headlines, as well as their timestamps, or the ID of a given headline
 
      '''   
     def Search(self,keyword=None,count=3,TopStory=False):
